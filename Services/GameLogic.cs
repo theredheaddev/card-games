@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cards.Models;
 using System.Linq;
 using System;
+using Cards.Enums;
 
 namespace Cards.Services
 {
@@ -11,11 +12,13 @@ namespace Cards.Services
         void ShuffleDeck();
 
         void ShowDeck();
+        void DisplayCards(List<Card> cards);
     }
 
     public class GameLogic : IGameLogic
     {
         public List<Card> Deck { get; set; }
+        public GameModes GameMode { get; set; }
 
         public void CreateDeck()
         {
@@ -58,6 +61,40 @@ namespace Cards.Services
             }
         }
 
+        public void DisplayCards(List<Card> cards)
+        {
+            //Build top
+            for (int i = 0; i < cards.Count; i++)
+            {
+                Console.Write(" _____  ");
+            }
+            Console.WriteLine("");
+
+            foreach (var card in cards)
+            {
+                Console.Write($"|{card.Text}{card.CardType.ToString()[0]}" + (card.Text.Length == 1 ? "   " : "  ") + "| ");
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                Console.Write("|     | ");
+            }
+            Console.WriteLine("");
+
+            foreach (var card in cards)
+            {
+                Console.Write("|" + (card.Text.Length == 1 ? "   " : "  ") + $@"{card.Text}{card.CardType.ToString()[0]}| ");
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                Console.Write(" =====  ");
+            }
+            Console.WriteLine("");
+        }
+
         private List<Card> CreateHearts()
         {
             return CreateCards(CardType.Hearts);
@@ -95,7 +132,12 @@ namespace Cards.Services
                 cards.Add(card);
             }
 
-            cards.Add(new Card { Value = 10, Text = "J", CardType = type });
+            cards.Add(new Card
+            {
+                Value = 10,
+                Text = "J",
+                CardType = type
+            });
             cards.Add(new Card { Value = 10, Text = "Q", CardType = type });
             cards.Add(new Card { Value = 10, Text = "K", CardType = type });
 
